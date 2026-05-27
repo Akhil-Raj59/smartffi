@@ -9,6 +9,8 @@ import { ProgramsGrid } from "../components/programs-grid";
 import { CorporateTraining } from "../components/corporate-training";
 import { ProductDevelopment } from "../components/product-development";
 import { CareerServices } from "../components/career-services";
+import { CareerPackage } from "../components/career-package";
+import { CareerFeatures } from "../components/career-features";
 import { FinalCTA } from "../components/final-cta";
 
 export const HomePage = () => {
@@ -25,6 +27,8 @@ export const HomePage = () => {
       <CorporateTraining />
       <ProductDevelopment />
       <CareerServices />
+      <CareerPackage />
+      <CareerFeatures />
       <FinalCTA />
     </div>
   );

@@ -41,12 +41,14 @@ export const CorporateClients = () => {
     <section className="py-12 sm:py-16 bg-white border-b border-gray-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
-          <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-2">
+            <span className="bg-gradient-to-r from-[var(--brand-red)] to-[var(--brand-orange)] bg-clip-text text-transparent">
+              Our Corporate Clients
+            </span>
+          </h3>
+          <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
             Trusted By Industry Leaders
           </p>
-          <h3 className="text-2xl font-bold text-gray-900">
-            Our Corporate Clients
-          </h3>
         </div>
         
         <div className="corporate-clients-slider">

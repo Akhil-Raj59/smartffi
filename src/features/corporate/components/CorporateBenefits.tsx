@@ -6,7 +6,9 @@ export const CorporateBenefits = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Why Choose SMARRTIF AI for Corporate Training
+            <span className="bg-gradient-to-r from-[var(--brand-red)] to-[var(--brand-orange)] bg-clip-text text-transparent">
+              Why Choose SMARRTIF AI for Corporate Training
+            </span>
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Enterprise-grade training programs with proven ROI
@@ -41,7 +43,8 @@ export const CorporateBenefits = () => {
           ].map((benefit, index) => (
             <div
               key={index}
-              className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-[var(--brand-red)] transition-colors"
+              className="bg-white border-2 border-gray-200 rounded-xl p-6 transition-all duration-300 animate-glow-card"
+              style={{ animationDelay: `${index * 2}s` }}
             >
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-gradient-to-r from-[var(--brand-red-light)] to-[var(--brand-orange-light)] mb-4">
                 <benefit.icon className="h-6 w-6 text-[var(--brand-red)]" />

@@ -4,20 +4,17 @@ import { Clock, CheckCircle2, ArrowRight } from "lucide-react";
 
 const durationPlans = [
   {
-    duration: "9 Months",
-    path: "/programs/9-months",
-    label: "9M",
-    commitment: "10-12 hours/week",
-    description: "Deep mastery with flexible learning schedule",
+    duration: "3 Months",
+    path: "/programs/3-months",
+    label: "3M",
+    commitment: "15-20 hours/week",
+    description: "Fast-track your AI career with intensive learning",
     features: [
-      "Three comprehensive programs",
-      "18 weekly 1-on-1 sessions",
-      "12+ projects + capstone",
-      "Complete portfolio building",
-      "Resume & personal branding",
-      "Premium job placement",
-      "Interview coaching",
-      "Lifetime access & support",
+      "One specialized program",
+      "6 bi-weekly mentor sessions",
+      "4-6 hands-on projects",
+      "Job placement support",
+      "Certificate of completion",
     ],
     popular: false,
   },
@@ -39,17 +36,20 @@ const durationPlans = [
     popular: true,
   },
   {
-    duration: "3 Months",
-    path: "/programs/3-months",
-    label: "3M",
-    commitment: "15-20 hours/week",
-    description: "Fast-track your AI career with intensive learning",
+    duration: "9 Months",
+    path: "/programs/9-months",
+    label: "9M",
+    commitment: "10-12 hours/week",
+    description: "Deep mastery with flexible learning schedule",
     features: [
-      "One specialized program",
-      "6 bi-weekly mentor sessions",
-      "4-6 hands-on projects",
-      "Job placement support",
-      "Certificate of completion",
+      "Three comprehensive programs",
+      "18 weekly 1-on-1 sessions",
+      "12+ projects + capstone",
+      "Complete portfolio building",
+      "Resume & personal branding",
+      "Premium job placement",
+      "Interview coaching",
+      "Lifetime access & support",
     ],
     popular: false,
   },
@@ -146,16 +146,16 @@ export const LearningDuration = () => {
                   style={!plan.popular ? {
                     backgroundImage: 'linear-gradient(to right, var(--brand-red) 0%, var(--brand-orange) 30%, var(--brand-orange) 70%, var(--brand-red) 100%)',
                     backgroundSize: '300% 100%',
-                    backgroundPosition: index === 0 ? (explore9MHovered ? 'right' : 'left') : index === 2 ? (explore3MHovered ? 'right' : 'left') : 'left',
+                    backgroundPosition: index === 0 ? (explore3MHovered ? 'right' : 'left') : index === 2 ? (explore9MHovered ? 'right' : 'left') : 'left',
                     transition: 'background-position 1.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
                   } : undefined}
                   onMouseEnter={() => {
-                    if (index === 0) setExplore9MHovered(true);
-                    if (index === 2) setExplore3MHovered(true);
+                    if (index === 0) setExplore3MHovered(true);
+                    if (index === 2) setExplore9MHovered(true);
                   }}
                   onMouseLeave={() => {
-                    if (index === 0) setExplore9MHovered(false);
-                    if (index === 2) setExplore3MHovered(false);
+                    if (index === 0) setExplore3MHovered(false);
+                    if (index === 2) setExplore9MHovered(false);
                   }}
                 >
                   Explore {plan.label} Programs

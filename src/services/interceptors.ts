@@ -4,6 +4,8 @@ import type { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from "axio
 /**
  * Request Interceptor: Attach Auth Token
  */
+
+ 
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem("auth_token");
@@ -52,6 +54,6 @@ apiClient.interceptors.response.use(
 
     return Promise.reject(error);
   }
-);
+); 
 
 export default apiClient;

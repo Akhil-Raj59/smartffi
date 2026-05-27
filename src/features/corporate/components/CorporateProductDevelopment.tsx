@@ -10,7 +10,9 @@ export const CorporateProductDevelopment = () => {
             <span className="text-sm font-semibold">Product Development</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Custom AI Product Development
+            <span className="bg-gradient-to-r from-[var(--brand-red)] to-[var(--brand-orange)] bg-clip-text text-transparent">
+              Custom AI Product Development
+            </span>
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Beyond training, we develop enterprise-grade AI products that drive real business value. Our flagship solutions combine cutting-edge technology with industry expertise.
@@ -115,16 +117,18 @@ export const CorporateProductDevelopment = () => {
         {/* Key Features */}
         <div className="bg-white rounded-2xl p-8 sm:p-12 mb-12">
           <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
-            Why Choose Our AI Products?
+            <span className="bg-gradient-to-r from-[var(--brand-red)] to-[var(--brand-orange)] bg-clip-text text-transparent">
+              Why Choose Our AI Products?
+            </span>
           </h3>
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-4 gap-6">
             {[
               { icon: Lightbulb, title: "End-to-End Development", description: "Complete product lifecycle from concept to deployment" },
               { icon: Settings, title: "Fully Customizable", description: "Tailored to your specific business requirements" },
               { icon: Rocket, title: "Scalable Architecture", description: "Built to grow with your organization" },
               { icon: Award, title: "Industry Expertise", description: "Proven solutions across multiple sectors" }
             ].map((feature, index) => (
-              <div key={index} className="text-center">
+              <div key={index} className="text-center p-6 rounded-2xl transition-all duration-300 hover:bg-orange-50/70 hover:shadow-md hover:scale-[1.02] border border-transparent hover:border-orange-100/50">
                 <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-gradient-to-r from-[var(--brand-red-light)] to-[var(--brand-orange-light)] mb-4">
                   <feature.icon className="h-7 w-7 text-[var(--brand-red)]" />
                 </div>
@@ -162,7 +166,9 @@ export const CorporateProductDevelopment = () => {
         {/* CTA */}
         <div className="text-center bg-white rounded-2xl p-8 sm:p-12 shadow-lg">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            Ready to Transform Your Business with AI?
+            <span className="bg-gradient-to-r from-[var(--brand-red)] to-[var(--brand-orange)] bg-clip-text text-transparent">
+              Ready to Transform Your Business with AI?
+            </span>
           </h3>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
             Let's discuss how our AI Analyzer Tools and LMS can drive innovation in your organization. Get a free consultation with our product experts.

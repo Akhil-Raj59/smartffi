@@ -10,6 +10,7 @@ import { WebinarsPage } from "@/features/webinars";
 import { EventsPage } from "@/features/events";
 import { BlogPage } from "@/features/blog";
 import { CareersPage } from "@/features/careers";
+import { LoginPage, SignupPage, ForgotPasswordPage, ResetPasswordPage } from "@/features/auth";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       { path: "events", Component: EventsPage },
       { path: "blog", Component: BlogPage },
       { path: "careers", Component: CareersPage },
+      { path: "login", Component: LoginPage },
+      { path: "signup", Component: SignupPage },
+      { path: "forgot-password", Component: ForgotPasswordPage },
+      { path: "reset-password", Component: ResetPasswordPage },
     ],
   },
 ]);

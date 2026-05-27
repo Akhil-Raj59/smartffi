@@ -6,6 +6,7 @@ import { CorporateUseCases } from "../components/CorporateUseCases";
 import { TrainingFormats } from "../components/TrainingFormats";
 import { CorporateProductDevelopment } from "../components/CorporateProductDevelopment";
 import { CorporateConsultation } from "../components/CorporateConsultation";
+import { CorporateStats } from "../components/CorporateStats";
 import { CheckCircle2 } from "lucide-react";
 
 export const CorporateTrainingPage = () => {
@@ -18,7 +19,7 @@ export const CorporateTrainingPage = () => {
     industry: "",
     trainingNeeds: "",
     timeline: "",
-    message: "",
+    additionalInfo: "",
   });
 
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -92,6 +93,7 @@ export const CorporateTrainingPage = () => {
         handleInputChange={handleInputChange} 
         handleSubmit={handleSubmit} 
       />
+      <CorporateStats />
     </div>
   );
 };

@@ -1,13 +1,26 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
-import { Target, Phone } from "lucide-react";
+import { Menu, X, Target, Phone, User, LogIn, LogOut, Key, UserPlus } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { useAppStore } from "@/store";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isConsultationHovered, setIsConsultationHovered] = useState(false);
   const location = useLocation();
+  const { user, logout } = useAppStore();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -81,6 +94,71 @@ export function Header() {
               <Phone className="h-4 w-4" />
               <span className="text-sm">Book Consultation</span>
             </Link>
+            
+            {/* Account Dropdown */}
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="inline-flex items-center justify-center w-10 h-10 rounded-xl border-2 border-[var(--brand-orange)] text-[var(--brand-orange)] hover:bg-[var(--brand-orange)] hover:text-white transition-all duration-300 cursor-pointer"
+                aria-label="Account Menu"
+                title="Account Menu"
+              >
+                {!user ? (
+                  <LogIn className="h-5 w-5" />
+                ) : (
+                  <User className="h-5 w-5" />
+                )}
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white border border-gray-100 shadow-xl py-2 z-50">
+                  {!user ? (
+                    <>
+                      <Link
+                        to="/login"
+                        onClick={() => setDropdownOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[var(--brand-orange)] transition-colors"
+                      >
+                        <LogIn className="h-4 w-4" />
+                        <span>Login</span>
+                      </Link>
+                      <Link
+                        to="/signup"
+                        onClick={() => setDropdownOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[var(--brand-orange)] transition-colors"
+                      >
+                        <UserPlus className="h-4 w-4" />
+                        <span>Sign up</span>
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <div className="px-4 py-1.5 border-b border-gray-100 text-xs text-gray-500 font-medium">
+                        {user.email || "Logged in"}
+                      </div>
+                      <Link
+                        to="/reset-password"
+                        onClick={() => setDropdownOpen(false)}
+                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[var(--brand-orange)] transition-colors"
+                      >
+                        <Key className="h-4 w-4" />
+                        <span>Change Password</span>
+                      </Link>
+                      <button
+                        onClick={() => {
+                          logout();
+                          setDropdownOpen(false);
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors text-left cursor-pointer font-medium"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>Logout</span>
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -128,6 +206,54 @@ export function Header() {
               >
                 Book Consultation
               </Link>
+
+              {/* Mobile Account Options */}
+              <div className="border-t border-gray-100 pt-4 mt-2 flex flex-col gap-3">
+                {!user ? (
+                  <>
+                    <Link
+                      to="/login"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center gap-2 px-4 py-1.5 text-sm text-gray-700 hover:text-[var(--brand-orange)] transition-colors"
+                    >
+                      <LogIn className="h-4 w-4 text-[var(--brand-orange)]" />
+                      <span>Login</span>
+                    </Link>
+                    <Link
+                      to="/signup"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center gap-2 px-4 py-1.5 text-sm text-gray-700 hover:text-[var(--brand-orange)] transition-colors"
+                    >
+                      <UserPlus className="h-4 w-4 text-[var(--brand-orange)]" />
+                      <span>Sign up</span>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <div className="px-4 text-xs text-gray-500 font-medium">
+                      Logged in as: {user.email}
+                    </div>
+                    <Link
+                      to="/reset-password"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center gap-2 px-4 py-1.5 text-sm text-gray-700 hover:text-[var(--brand-orange)] transition-colors"
+                    >
+                      <Key className="h-4 w-4 text-[var(--brand-orange)]" />
+                      <span>Change Password</span>
+                    </Link>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setMobileMenuOpen(false);
+                      }}
+                      className="flex items-center gap-2 px-4 py-1.5 text-sm text-red-600 hover:text-red-700 text-left w-full cursor-pointer font-medium"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      <span>Logout</span>
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         )}

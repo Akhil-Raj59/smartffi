@@ -24,8 +24,10 @@ export const Leadership = () => {
             <Award className="h-4 w-4 text-[var(--brand-red)]" />
             <span className="text-sm font-semibold text-[var(--brand-red)]">Leadership</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Founder & CEO
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <span className="bg-gradient-to-r from-[var(--brand-red)] to-[var(--brand-orange)] bg-clip-text text-transparent">
+              Founder & CEO
+            </span>
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Leading the vision to democratize AI education and empower professionals worldwide

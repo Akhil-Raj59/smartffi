@@ -29,7 +29,9 @@ export const CareerValues = () => {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Our Values
+            <span className="bg-gradient-to-r from-[var(--brand-red)] to-[var(--brand-orange)] bg-clip-text text-transparent">
+              Our Values
+            </span>
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             The principles that guide how we work and make decisions

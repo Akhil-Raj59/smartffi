@@ -195,7 +195,7 @@ export const AvailablePrograms = () => {
           <p className="text-lg text-gray-600 max-w-4xl mx-auto">Explore our comprehensive AI programs with detailed career outcomes and salary packages.</p>
         </div>
 
-        <div className="space-y-12">
+        <div className="grid md:grid-cols-2 gap-8">
           {programs.map((program, index) => {
             const gradientColors: Record<string, string> = {
               'ai-agents': 'from-red-100 via-orange-100 to-amber-100',
@@ -227,18 +227,18 @@ export const AvailablePrograms = () => {
                 id={program.id}
                 className="scroll-mt-24"
               >
-                <div className={`relative px-20 sm:px-24 py-8 bg-gradient-to-br ${programGradient} shadow-inner overflow-visible rounded-3xl mx-auto max-w-4xl`}>
+                <div className={`relative px-6 sm:px-8 py-8 bg-gradient-to-br ${programGradient} shadow-inner overflow-visible rounded-3xl h-full flex flex-col justify-between`}>
                   <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/5 pointer-events-none"></div>
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none"></div>
                   <div className="absolute top-0 left-0 w-96 h-96 bg-white/30 rounded-full blur-3xl opacity-60 pointer-events-none"></div>
                   <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl opacity-60 pointer-events-none"></div>
 
-                  <div className="max-w-3xl mx-auto px-0 mb-6 relative z-10">
+                  <div className="w-full mb-6 relative z-10">
                     <div className="flex items-center gap-3 mb-3">
                       <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${program.color}`}>
                         <program.icon className="h-6 w-6 text-white" />
                       </div>
-                      <h3 className="text-2xl sm:text-3xl font-bold">
+                      <h3 className="text-xl sm:text-2xl font-bold">
                         <span className="bg-gradient-to-r from-[var(--brand-red)] to-[var(--brand-orange)] bg-clip-text text-transparent">
                           {program.title}
                         </span>
@@ -249,7 +249,7 @@ export const AvailablePrograms = () => {
                     </p>
                   </div>
 
-                  <div className="max-w-3xl mx-auto relative px-0 z-10">
+                  <div className="w-full relative z-10">
                     <Slider {...sliderSettings} className="llm-carousel">
                       <div>
                         <div className="w-full aspect-video relative rounded-2xl overflow-hidden bg-gray-900 shadow-xl">
@@ -371,36 +371,32 @@ export const AvailablePrograms = () => {
                     </Slider>
                   </div>
 
-                  <div className="max-w-3xl mx-auto mt-6 bg-gradient-to-r from-[var(--brand-red)] to-[var(--brand-orange)] px-6 py-4 flex flex-col sm:flex-row items-center justify-between rounded-xl shadow-lg gap-3 relative z-10">
-                    <div className="flex-grow text-center sm:text-left">
+                  <div className="w-full mt-auto pt-6 bg-gradient-to-r from-[var(--brand-red)] to-[var(--brand-orange)] px-5 py-5 flex flex-col items-center text-center rounded-xl shadow-lg gap-4 relative z-10">
+                    <div>
                       <h4 className="text-base font-bold text-white mb-1">
                         Ready to Get Started?
                       </h4>
-                      <p className="text-white/90 text-xs sm:text-sm">
+                      <p className="text-white/90 text-xs">
                         Take our free assessment or book a consultation with our experts.
                       </p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 w-full justify-center">
                       <Link
                         to="/assessment"
-                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-white text-[var(--brand-red)] hover:shadow-lg hover:scale-[1.02] transition-all duration-300 font-semibold whitespace-nowrap text-sm"
+                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-white text-[var(--brand-red)] hover:shadow-lg hover:scale-[1.02] transition-all duration-300 font-semibold text-xs flex-1 max-w-[150px] justify-center"
                       >
                         Apply Now
-                        <ArrowRight className="h-4 w-4" />
+                        <ArrowRight className="h-3.5 w-3.5" />
                       </Link>
                       <Link
                         to="/corporate-training"
-                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg border-2 border-white text-white hover:bg-white hover:text-[var(--brand-red)] hover:scale-[1.02] transition-all duration-300 font-semibold whitespace-nowrap text-sm"
+                        className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg border border-white text-white hover:bg-white hover:text-[var(--brand-red)] hover:scale-[1.02] transition-all duration-300 font-semibold text-xs flex-1 max-w-[150px] justify-center"
                       >
-                        Book Consultation
+                        Consultation
                       </Link>
                     </div>
                   </div>
                 </div>
-
-                {index < programs.length - 1 && (
-                  <div className="mt-12 h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent" />
-                )}
               </div>
             );
           })}

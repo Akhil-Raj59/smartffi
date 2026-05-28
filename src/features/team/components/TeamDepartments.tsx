@@ -2,10 +2,10 @@ import { Linkedin, UserCheck, Code } from "lucide-react";
 
 const hrTeam = [
   {
-    name: "Samaggi Singh",
+    name: "Maggi Singh",
     role: "HR Manager",
     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
-    bio: "Samaggi is the HR Manager at SMARRTIF AI leading HR operations, policy development, talent acquisition, and employee management initiatives. With a structured and people-centric approach, Samaggi focuses on building efficient workplace systems, strengthening organizational culture, and supporting the company’s overall growth and operational excellence.",
+    bio: "maggi is the HR Manager at SMARRTIF AI leading HR operations, policy development, talent acquisition, and employee management initiatives. With a structured and people-centric approach, Samaggi focuses on building efficient workplace systems, strengthening organizational culture, and supporting the company’s overall growth and operational excellence.",
     linkedin: "https://www.linkedin.com/in/samaggi",
   },
   {

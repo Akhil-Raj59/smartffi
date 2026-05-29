@@ -1,28 +1,19 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { createAuthSlice, AuthSlice } from "./auth-slice";
+import { createUiSlice, UiSlice } from "./ui-slice";
 
-interface AppState {
-  isSidebarOpen: boolean;
-  toggleSidebar: () => void;
-  user: any | null;
-  setUser: (user: any) => void;
-  logout: () => void;
-}
+type StoreState = AuthSlice & UiSlice;
 
-export const useAppStore = create<AppState>()(
+export const useAppStore = create<StoreState>()(
   persist(
-    (set) => ({
-      isSidebarOpen: false,
-      toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
-      user: null,
-      setUser: (user) => set({ user }),
-      logout: () => {
-        localStorage.removeItem("auth_token");
-        set({ user: null });
-      },
+    (...a) => ({
+      ...createAuthSlice(...a),
+      ...createUiSlice(...a),
     }),
     {
       name: "app-storage",
+      partialize: (state) => ({ user: state.user }),
     }
   )
 );

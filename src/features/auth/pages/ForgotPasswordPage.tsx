@@ -1,21 +1,32 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Mail, ArrowLeft, KeyRound, CheckCircle2 } from "lucide-react";
+import apiClient from "@/services/interceptors";
 
 export const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
     setIsLoading(true);
 
-    // Mock send reset email
-    setTimeout(() => {
+    try {
+      const response: any = await apiClient.post("/forget-password", { email });
+      if (response && response.success) {
+        setIsSubmitted(true);
+      } else {
+        setError(response?.message || "Failed to send reset link. Please try again.");
+      }
+    } catch (err: any) {
+      const errMsg = err.response?.data?.message || err.message || "Failed to send reset link.";
+      setError(errMsg);
+    } finally {
       setIsLoading(false);
-      setIsSubmitted(true);
-    }, 800);
+    }
   };
 
   return (
@@ -53,6 +64,12 @@ export const ForgotPasswordPage = () => {
                     Enter the email address associated with your account, and we'll email you a link to reset your password.
                   </p>
                 </div>
+
+                {error && (
+                  <div className="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm animate-fade-in">
+                    {error}
+                  </div>
+                )}
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
                   <div>
@@ -114,7 +131,7 @@ export const ForgotPasswordPage = () => {
                   <div className="mt-2 text-right">
                     {/* Simulated reset link for demonstration */}
                     <Link
-                      to={`/reset-password?email=${encodeURIComponent(email)}`}
+                      to={`/reset-password/dev-demo-token?email=${encodeURIComponent(email)}`}
                       className="font-bold underline text-[var(--brand-orange)] hover:text-[var(--brand-red)]"
                     >
                       [Demo: Open Reset Password Screen]
@@ -124,10 +141,11 @@ export const ForgotPasswordPage = () => {
 
                 <button
                   type="button"
-                  onClick={() => setIsSubmitted(false)}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand-orange)] hover:underline"
+                  onClick={handleSubmit}
+                  disabled={isLoading}
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--brand-orange)] hover:underline disabled:opacity-50"
                 >
-                  Did not receive? Resend link
+                  {isLoading ? "Resending..." : "Did not receive? Resend link"}
                 </button>
 
                 <div className="pt-4 border-t border-gray-100">

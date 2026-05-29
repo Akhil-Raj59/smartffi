@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Lock, Eye, EyeOff, CheckCircle2, ArrowRight } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Lock, Eye, EyeOff, CheckCircle2, ArrowRight, KeyRound } from "lucide-react";
 import apiClient from "@/services/interceptors";
 
-export const ResetPasswordPage = () => {
+export const ChangePasswordPage = () => {
   const navigate = useNavigate();
-  const { resetToken } = useParams();
-  
-  const [password, setPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -19,27 +19,36 @@ export const ResetPasswordPage = () => {
     e.preventDefault();
     setError("");
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters long.");
+    if (newPassword.length < 6) {
+      setError("New password must be at least 6 characters long.");
       return;
     }
 
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+    if (newPassword !== confirmPassword) {
+      setError("New passwords do not match.");
+      return;
+    }
+
+    if (oldPassword === newPassword) {
+      setError("New password cannot be the same as your old password.");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      const response: any = await apiClient.post(`/reset-password/${resetToken}`, { password });
+      const response: any = await apiClient.post("/change-password", {
+        oldPassword,
+        newPassword,
+      });
+
       if (response && response.success) {
         setIsSuccess(true);
       } else {
-        setError(response?.message || "Failed to reset password. Please try again.");
+        setError(response?.message || "Failed to change password. Please try again.");
       }
     } catch (err: any) {
-      const errMsg = err.response?.data?.message || err.message || "Failed to reset password.";
+      const errMsg = err.response?.data?.message || err.message || "Failed to change password.";
       setError(errMsg);
     } finally {
       setIsLoading(false);
@@ -58,7 +67,7 @@ export const ResetPasswordPage = () => {
 
           <div className="relative z-10 space-y-4">
             <h2 className="text-3xl font-extrabold text-white leading-tight">
-              Your gateway to hands-on learning and career transformation
+              Keep your account secure with regular password updates
             </h2>
           </div>
         </div>
@@ -70,15 +79,15 @@ export const ResetPasswordPage = () => {
               <>
                 {/* Title Icon */}
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-orange-100 text-[var(--brand-orange)]">
-                  <Lock className="h-6 w-6" />
+                  <KeyRound className="h-6 w-6" />
                 </div>
 
                 <div>
                   <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
-                    Reset your password
+                    Change Password
                   </h2>
                   <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-                    Choose a new strong password for your account to secure your learning journey.
+                    Update your password to ensure your account remains safe and private.
                   </p>
                 </div>
 
@@ -91,6 +100,32 @@ export const ResetPasswordPage = () => {
                 <form className="space-y-4" onSubmit={handleSubmit}>
                   <div>
                     <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+                      Current Password
+                    </label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                        <Lock className="h-4.5 w-4.5" />
+                      </span>
+                      <input
+                        type={showOldPassword ? "text" : "password"}
+                        value={oldPassword}
+                        onChange={(e) => setOldPassword(e.target.value)}
+                        required
+                        className="w-full pl-11 pr-10 py-2.5 border border-gray-200 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brand-orange)] focus:border-transparent text-sm text-gray-900"
+                        placeholder="••••••••"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowOldPassword(!showOldPassword)}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                      >
+                        {showOldPassword ? <EyeOff className="h-4.5 w-4.5" /> : <Eye className="h-4.5 w-4.5" />}
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
                       New Password
                     </label>
                     <div className="relative">
@@ -98,19 +133,19 @@ export const ResetPasswordPage = () => {
                         <Lock className="h-4.5 w-4.5" />
                       </span>
                       <input
-                        type={showPassword ? "text" : "password"}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        type={showNewPassword ? "text" : "password"}
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
                         required
                         className="w-full pl-11 pr-10 py-2.5 border border-gray-200 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brand-orange)] focus:border-transparent text-sm text-gray-900"
                         placeholder="••••••••"
                       />
                       <button
                         type="button"
-                        onClick={() => setShowPassword(!showPassword)}
+                        onClick={() => setShowNewPassword(!showNewPassword)}
                         className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
                       >
-                        {showPassword ? <EyeOff className="h-4.5 w-4.5" /> : <Eye className="h-4.5 w-4.5" />}
+                        {showNewPassword ? <EyeOff className="h-4.5 w-4.5" /> : <Eye className="h-4.5 w-4.5" />}
                       </button>
                     </div>
                   </div>
@@ -146,7 +181,7 @@ export const ResetPasswordPage = () => {
                     disabled={isLoading}
                     className="w-full py-3 px-4 rounded-xl text-white font-bold bg-gradient-to-r from-orange-400 to-rose-400 hover:opacity-95 hover:shadow-lg transition-all text-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
-                    {isLoading ? "Saving changes..." : "Reset Password"}
+                    {isLoading ? "Saving changes..." : "Change Password"}
                   </button>
                 </form>
               </>
@@ -162,16 +197,16 @@ export const ResetPasswordPage = () => {
                     Password updated!
                   </h2>
                   <p className="mt-2 text-sm text-gray-500 leading-relaxed">
-                    Your password has been successfully updated. You can now log in using your new credentials.
+                    Your password has been successfully changed.
                   </p>
                 </div>
 
                 <button
                   type="button"
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate("/")}
                   className="w-full py-3 px-4 rounded-xl text-white font-bold bg-gradient-to-r from-orange-400 to-rose-400 hover:opacity-95 hover:shadow-lg transition-all text-sm flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  Go to login
+                  Go to home
                   <ArrowRight className="h-4.5 w-4.5" />
                 </button>
               </div>

@@ -1,29 +1,12 @@
 import apiClient from "./api-client";
-import type { InternalAxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import type { AxiosResponse, AxiosError } from "axios";
 
 /**
- * Request Interceptor: Attach Auth Token
- */
-
- 
-apiClient.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem("auth_token");
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error: AxiosError) => {
-    return Promise.reject(error);
-  }
-);
-
-/**
- * Response Interceptor: Centralized Error Handling
+ * Response Interceptor: Centralized Error Handling and Data Unwrapping
  */
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => {
+    // Unwraps response data so that the API call resolves to response.data directly
     return response.data;
   },
   (error: AxiosError) => {
@@ -33,9 +16,8 @@ apiClient.interceptors.response.use(
     // Handle specific status codes
     switch (status) {
       case 401:
-        // Unauthorized: Clear token and redirect
-        localStorage.removeItem("auth_token");
-        if (window.location.pathname !== "/login") {
+        // Unauthorized: Redirect to login if user is trying to access protected paths like dashboard
+        if (window.location.pathname.startsWith("/dashboard")) {
           window.location.href = "/login";
         }
         break;
@@ -46,7 +28,7 @@ apiClient.interceptors.response.use(
         console.error("[API Error] Not Found: Resource does not exist.");
         break;
       case 500:
-        console.error("[API Error] Internal Server Error.");
+        console.error("[API Error] Internal Server Error:", message);
         break;
       default:
         console.error(`[API Error] ${status || "Network Error"}: ${message}`);
@@ -54,6 +36,6 @@ apiClient.interceptors.response.use(
 
     return Promise.reject(error);
   }
-); 
+);
 
 export default apiClient;

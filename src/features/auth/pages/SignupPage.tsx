@@ -1,37 +1,85 @@
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppStore } from "@/store";
-import { UserPlus, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { UserPlus, Mail, Lock, Eye, EyeOff, User, Upload, X } from "lucide-react";
+import apiClient from "@/services/interceptors";
 
 export const SignupPage = () => {
   const navigate = useNavigate();
   const setUser = useAppStore((state) => state.setUser);
 
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        setError("Image size must be less than 2MB.");
+        return;
+      }
+      setAvatarFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const clearAvatar = () => {
+    setAvatarFile(null);
+    setAvatarPreview(null);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!fullName.trim()) {
+      setError("Full Name is required.");
+      return;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
     setIsLoading(true);
 
-    // Mock Signup
-    setTimeout(() => {
-      setIsLoading(false);
-      if (email && password) {
-        setUser({
-          email,
-          name: email.split("@")[0],
-          role: "user",
-        });
+    try {
+      const formData = new FormData();
+      formData.append("fullName", fullName);
+      formData.append("email", email);
+      formData.append("password", password);
+      if (avatarFile) {
+        formData.append("avatar", avatarFile);
+      }
+
+      const response: any = await apiClient.post("/register", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response && response.success && response.user) {
+        setUser(response.user);
         navigate("/");
       } else {
-        setError("Please enter a valid email and password.");
+        setError(response?.message || "Registration failed. Please try again.");
       }
-    }, 800);
+    } catch (err: any) {
+      const errMsg = err.response?.data?.message || err.message || "Registration failed.";
+      setError(errMsg);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -75,6 +123,56 @@ export const SignupPage = () => {
             )}
 
             <form className="space-y-4" onSubmit={handleSubmit}>
+              {/* Profile Avatar Upload */}
+              <div className="flex flex-col items-center space-y-2 mb-4">
+                <span className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Profile Photo (Optional)
+                </span>
+                <div className="relative group">
+                  <div className="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center overflow-hidden bg-gray-50 group-hover:border-[var(--brand-orange)] transition-colors relative">
+                    {avatarPreview ? (
+                      <img src={avatarPreview} alt="Avatar Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <Upload className="h-6 w-6 text-gray-400 group-hover:text-[var(--brand-orange)] transition-colors" />
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                    />
+                  </div>
+                  {avatarPreview && (
+                    <button
+                      type="button"
+                      onClick={clearAvatar}
+                      className="absolute -top-1 -right-1 bg-red-100 text-red-600 rounded-full p-1 hover:bg-red-200 transition-colors shadow-sm"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-gray-400">
+                    <User className="h-4.5 w-4.5" />
+                  </span>
+                  <input
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
+                    className="w-full pl-11 pr-4 py-2.5 border border-gray-200 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brand-orange)] focus:border-transparent text-sm text-gray-900"
+                    placeholder="John Doe"
+                  />
+                </div>
+              </div>
+
               <div>
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">
                   Email Address

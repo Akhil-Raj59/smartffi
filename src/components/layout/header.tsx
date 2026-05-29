@@ -8,9 +8,13 @@ export function Header() {
   const [isHovered, setIsHovered] = useState(false);
   const [isConsultationHovered, setIsConsultationHovered] = useState(false);
   const location = useLocation();
-  const { user, logout } = useAppStore();
+  const { user, logout, checkAuth } = useAppStore();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -137,7 +141,7 @@ export function Header() {
                         {user.email || "Logged in"}
                       </div>
                       <Link
-                        to="/reset-password"
+                        to="/change-password"
                         onClick={() => setDropdownOpen(false)}
                         className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[var(--brand-orange)] transition-colors"
                       >
@@ -234,7 +238,7 @@ export function Header() {
                       Logged in as: {user.email}
                     </div>
                     <Link
-                      to="/reset-password"
+                      to="/change-password"
                       onClick={() => setMobileMenuOpen(false)}
                       className="flex items-center gap-2 px-4 py-1.5 text-sm text-gray-700 hover:text-[var(--brand-orange)] transition-colors"
                     >

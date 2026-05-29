@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppStore } from "@/store";
 import { User, LogIn, Mail, Lock, Eye, EyeOff } from "lucide-react";
+import apiClient from "@/services/interceptors";
 
 export const LoginPage = () => {
   const navigate = useNavigate();
@@ -13,25 +14,25 @@ export const LoginPage = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
 
-    // Mock Login
-    setTimeout(() => {
-      setIsLoading(false);
-      if (email && password) {
-        setUser({
-          email,
-          name: email.split("@")[0],
-          role: "user",
-        });
+    try {
+      const response: any = await apiClient.post("/login", { email, password });
+      if (response && response.success && response.user) {
+        setUser(response.user);
         navigate("/");
       } else {
-        setError("Please enter a valid email and password.");
+        setError(response?.message || "Login failed. Please try again.");
       }
-    }, 800);
+    } catch (err: any) {
+      const errMsg = err.response?.data?.message || err.message || "Invalid email or password.";
+      setError(errMsg);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

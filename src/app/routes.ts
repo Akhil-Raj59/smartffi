@@ -10,7 +10,7 @@ import { WebinarsPage } from "@/features/webinars";
 import { EventsPage } from "@/features/events";
 import { BlogPage } from "@/features/blog";
 import { CareersPage } from "@/features/careers";
-import { LoginPage, SignupPage, ForgotPasswordPage, ResetPasswordPage } from "@/features/auth";
+import { LoginPage, SignupPage, ForgotPasswordPage, ResetPasswordPage, ChangePasswordPage } from "@/features/auth";
 
 export const router = createBrowserRouter([
   {
@@ -30,7 +30,8 @@ export const router = createBrowserRouter([
       { path: "login", Component: LoginPage },
       { path: "signup", Component: SignupPage },
       { path: "forgot-password", Component: ForgotPasswordPage },
-      { path: "reset-password", Component: ResetPasswordPage },
+      { path: "reset-password/:resetToken", Component: ResetPasswordPage },
+      { path: "change-password", Component: ChangePasswordPage },
     ],
   },
 ]);
